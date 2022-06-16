@@ -4,7 +4,7 @@ class DrawerMain extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    return Container(
+    return SizedBox(
       width: 200,
       child: Drawer(
         child: ListView(
