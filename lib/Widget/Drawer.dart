@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-class DrawerMain extends StatelessWidget{
+
+class DrawerMain extends StatelessWidget {
   const DrawerMain({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return SizedBox(
       width: 200,
       child: Drawer(
@@ -12,9 +13,52 @@ class DrawerMain extends StatelessWidget{
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(color: Color(0xFFCADCED)),
-              child: Text("Mono Cycle",style: TextStyle(color: Colors.black),),),
+              child: Text(
+                "Menu Cycle",
+                style: TextStyle(
+                    fontSize: 35,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.indigo),
+              ),
+            ),
             ListTile(
-              title: const Text('Item 1'),
+              title: const Text('Profile'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(
+              color: Colors.black,
+              thickness: 0.2,
+            ),
+            ListTile(
+              title: const Text('Records'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(
+              color: Colors.black,
+              thickness: 0.2,
+            ),
+            ListTile(
+              title: const Text('About Us'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+                Navigator.pop(context);
+              },
+            ),
+            Divider(
+              color: Colors.black,
+              thickness: 0.2,
+            ),
+            ListTile(
+              title: const Text('More app'),
               onTap: () {
                 // Update the state of the app.
                 // ...
@@ -23,7 +67,6 @@ class DrawerMain extends StatelessWidget{
             ),
           ],
         ),
-
       ),
     );
   }
