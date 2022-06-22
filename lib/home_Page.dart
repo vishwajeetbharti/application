@@ -45,37 +45,43 @@ class HomePage extends StatelessWidget {
           image: DecorationImage(
               image: AssetImage("assets/Back.png"), fit: BoxFit.cover),
         ),
-        child: Container(
-          margin: const EdgeInsets.only(top: 255, left: 15),
-          child: Center(
-            child: ListView(
-              children: <Widget>[
-                CircularPercentIndicator(
-                    radius: 100,
-                    lineWidth: 12.0,
-                    center: const Text(
-                      "28 days left\nfor next date",
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.indigo),
-                    ),
-                    backgroundColor: primaryColor,
-                    progressColor: Colors.lightBlue,
-                    percent: 0.035,
-                    header: const Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text(
-                        "Days of cycle",
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.indigo),
-                      ),
-                    ))
-              ],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.33,
+              child: Center(
+                child: ListView(
+                  children: <Widget>[
+                    CircularPercentIndicator(
+                        radius: 110,
+                        lineWidth: 15.0,
+                        center: const Text(
+                          "28 days left\nfor next date",
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.indigo),
+                        ),
+                        backgroundColor: primaryColor,
+                        progressColor: Colors.lightBlue,
+                        percent: 0.035,
+                        header: const Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Text(
+                            "Days of cycle",
+                            style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.indigo),
+                          ),
+                        ))
+                  ],
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

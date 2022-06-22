@@ -1,3 +1,5 @@
+import 'package:application/Widget/aboutUs.dart';
+import 'package:application/profile.dart';
 import 'package:flutter/material.dart';
 
 class DrawerMain extends StatelessWidget {
@@ -14,7 +16,7 @@ class DrawerMain extends StatelessWidget {
             const DrawerHeader(
               decoration: BoxDecoration(color: Color(0xFFCADCED)),
               child: Text(
-                "Menu Cycle",
+                "Meno Cycle",
                 style: TextStyle(
                     fontSize: 35,
                     fontWeight: FontWeight.w300,
@@ -24,9 +26,12 @@ class DrawerMain extends StatelessWidget {
             ListTile(
               title: const Text('Profile'),
               onTap: () {
-                // Update the state of the app.
-                // ...
-                Navigator.pop(context);
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const Profile()),
+                );
+                // Navigator.pop(context);
               },
             ),
             const Divider(
@@ -48,12 +53,15 @@ class DrawerMain extends StatelessWidget {
             ListTile(
               title: const Text('About Us'),
               onTap: () {
-                // Update the state of the app.
-                // ...
-                Navigator.pop(context);
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const About()),
+                );
+                // Navigator.pop(context);
               },
             ),
-            Divider(
+            const Divider(
               color: Colors.black,
               thickness: 0.2,
             ),
