@@ -1,3 +1,4 @@
+import 'package:application/Records.dart';
 import 'package:application/Widget/aboutUs.dart';
 import 'package:application/profile.dart';
 import 'package:flutter/material.dart';
@@ -41,9 +42,12 @@ class DrawerMain extends StatelessWidget {
             ListTile(
               title: const Text('Records'),
               onTap: () {
-                // Update the state of the app.
-                // ...
-                Navigator.pop(context);
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const Record()),
+                );
+                // Navigator.pop(context);
               },
             ),
             const Divider(

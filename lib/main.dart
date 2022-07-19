@@ -1,17 +1,19 @@
+import 'package:application/SplaceScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:application/home_Page.dart';
+
 void main() {
   runApp(const MyApp());
 }
-class MyApp extends StatelessWidget{
+
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "application",
-      home: HomePage(),
+      home: Login(),
     );
   }
 }
