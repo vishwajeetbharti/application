@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     bool? firstTime = pref.getBool('first_time');
     if (firstTime != null) {
-      return Login();
+      return const Login();
     } else {
       pref.setBool("first_time", false);
     }
@@ -31,7 +31,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +67,27 @@ class Login extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        onTap: () {
+                          showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2025))
+                              .then((date) {
+                            // Strings.upDate= date;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.purpleAccent, width: 1.0)),
+                            labelText: Strings.upDate,
+                            hintText: '00/00/0000'),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
                         keyboardType: TextInputType.number,
                         maxLength: 2,
                         onChanged: (text) {
@@ -81,22 +101,10 @@ class Login extends StatelessWidget {
                             hintText: 'Days'),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        onChanged: (text) {},
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.purpleAccent, width: 1.0)),
-                            labelText: Strings.upDate,
-                            hintText: '00/00/0000'),
-                      ),
-                    ),
                     RaisedButton(
                       textColor: Colors.white,
                       color: Colors.blue,
-                      child: Text('Sign In'),
+                      child: const Text('Sign In'),
                       onPressed: () {
                         Navigator.push<void>(
                           context,

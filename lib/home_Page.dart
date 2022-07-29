@@ -1,4 +1,5 @@
 import 'package:application/Calender.dart';
+import 'package:application/Data/mainData.dart';
 import 'package:application/Widget/Drawer.dart';
 import 'package:application/data.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,9 @@ class HomePage extends StatelessWidget {
       drawer: const DrawerMain(),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
-          "Yukthi",
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          Strings.Yourname,
+          style: const TextStyle(color: Colors.black),
         ),
         backgroundColor: primaryColor,
         actions: <Widget>[
