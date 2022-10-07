@@ -101,18 +101,20 @@ class Login extends StatelessWidget {
                             hintText: 'Days'),
                       ),
                     ),
-                    RaisedButton(
-                      textColor: Colors.white,
-                      color: Colors.blue,
-                      child: const Text('Sign In'),
-                      onPressed: () {
-                        Navigator.push<void>(
-                          context,
-                          MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  const HomePage()),
-                        );
-                      },
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.purple),
+                        onPressed: () {
+                          Navigator.push<void>(
+                            context,
+                            MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    const HomePage()),
+                          );
+                        },
+                        child: const Text('Start'),
+                      ),
                     )
                   ],
                 ),
