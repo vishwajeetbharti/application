@@ -1,3 +1,4 @@
+import 'package:application/Data/color.dart';
 import 'package:application/data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -376,6 +377,7 @@ class CalenderSec extends StatelessWidget {
                             Day(date: dateInput45),
                             Day(
                               date: dateInput46,
+                              rightMargin: 0,
                             ),
                           ],
                         ),
@@ -392,25 +394,40 @@ class CalenderSec extends StatelessWidget {
   }
 }
 
-class Day extends StatelessWidget {
+class Day extends StatefulWidget {
   const Day({
     Key? key,
     required this.date,
-    this.rightMargin = 45.0,
+    this.rightMargin = 30.0,
   }) : super(key: key);
-
   final String date;
   final double rightMargin;
 
   @override
+  State<Day> createState() => _DayState();
+}
+
+class _DayState extends State<Day> {
+  var color = Colors.transparent;
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 5, right: rightMargin, bottom: 5),
-      child: GestureDetector(
-        onTap: () {},
-        child: Text(
-          date,
-          style: const TextStyle(fontSize: 15),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          color = AppColors.black;
+        });
+      },
+      child: Container(
+        height: 25,
+        width: 25,
+        decoration: BoxDecoration(border: Border.all(color: color)),
+        margin: EdgeInsets.only(top: 5, right: widget.rightMargin, bottom: 5),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 1),
+          child: Text(
+            widget.date,
+            style: const TextStyle(fontSize: 15),
+          ),
         ),
       ),
     );
