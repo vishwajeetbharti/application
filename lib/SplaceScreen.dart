@@ -1,8 +1,10 @@
 import 'package:application/Data/mainData.dart';
 import 'package:application/data.dart';
-import 'package:application/home_Page.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'home_Page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -29,8 +31,18 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
+  final TextEditingController averageDayController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +65,7 @@ class Login extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         maxLength: 15,
-                        onChanged: (text) {
-                          Strings.Yourname = text;
-                        },
+                        controller: nameController,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(
@@ -74,15 +84,19 @@ class Login extends StatelessWidget {
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2025))
                               .then((date) {
-                            // Strings.upDate= date;
+                            if (date != null) {
+                              dateController.text =
+                                  DateFormat('dd-mm-yyyy').format(date);
+                            }
                           });
                         },
+                        controller: dateController,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.purpleAccent, width: 1.0)),
                             labelText: Strings.upDate,
-                            hintText: '00/00/0000'),
+                            hintText: "Date"),
                       ),
                     ),
                     Padding(
@@ -90,22 +104,27 @@ class Login extends StatelessWidget {
                       child: TextFormField(
                         keyboardType: TextInputType.number,
                         maxLength: 2,
-                        onChanged: (text) {
-                          Strings.avarage = text as int;
-                        },
+                        controller: averageDayController,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.purpleAccent, width: 1.0)),
-                            labelText: "Avarage Day",
+                            labelText: "Average Day",
                             hintText: 'Days'),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.purple),
-                        onPressed: () {
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.purple),
+                        onPressed: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          prefs.setString(Strings.name, nameController.text);
+                          prefs.setString(Strings.date, dateController.text);
+                          prefs.setString(
+                              Strings.average, averageDayController.text);
+                          if (!mounted) return;
                           Navigator.push<void>(
                             context,
                             MaterialPageRoute<void>(
@@ -126,4 +145,5 @@ class Login extends StatelessWidget {
     );
   }
 }
+
 //class MyDatabase extends

@@ -1,5 +1,6 @@
 import 'package:application/data.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CalenderSec extends StatelessWidget {
   const CalenderSec({Key? key}) : super(key: key);
@@ -8,8 +9,13 @@ class CalenderSec extends StatelessWidget {
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     int year = now.year;
-    int month = now.month;
-    int dates = now.day;
+    String initAtSun = "";
+    String initAtMon = "";
+    String initAtTue = "";
+    String initAtWed = "";
+    String initAtThu = "";
+    String initAtFri = "";
+    String initAtSat = "";
     List<String> monthName = [
       "January",
       "February",
@@ -38,9 +44,8 @@ class CalenderSec extends StatelessWidget {
           return empty;
         } else if (monthName[i] == "April" ||
             monthName[i] == "June" ||
-            monthName[i] == "August" ||
-            monthName[i] == "October" ||
-            monthName[i] == "December") {
+            monthName[i] == "September" ||
+            monthName[i] == "November") {
           if (operetta > 30) {
             return empty;
           }
@@ -61,6 +66,68 @@ class CalenderSec extends StatelessWidget {
       }
     }
 
+    initializer(int initmonth, int inityear) async {
+      DateTime firstday = DateTime.utc(inityear, initmonth, 1);
+      String dateFormat = DateFormat('EEEE').format(firstday);
+      if (dateFormat == "Monday") {
+        initAtSun = "7";
+        initAtMon = "1";
+        initAtTue = "2";
+        initAtWed = "3";
+        initAtThu = "4";
+        initAtFri = "5";
+        initAtSat = "6";
+      } else if (dateFormat == "Tuesday") {
+        initAtSun = "6";
+        initAtMon = " ";
+        initAtTue = "1";
+        initAtWed = "2";
+        initAtThu = "3";
+        initAtFri = "4";
+        initAtSat = "5";
+      } else if (dateFormat == "Wednesday") {
+        initAtSun = "5";
+        initAtMon = " ";
+        initAtTue = " ";
+        initAtWed = "1";
+        initAtThu = "2";
+        initAtFri = "3";
+        initAtSat = "4";
+      } else if (dateFormat == "Thursday") {
+        initAtSun = "4";
+        initAtMon = " ";
+        initAtTue = " ";
+        initAtWed = " ";
+        initAtThu = "1";
+        initAtFri = "2";
+        initAtSat = "3";
+      } else if (dateFormat == "Friday") {
+        initAtSun = "3";
+        initAtMon = " ";
+        initAtTue = " ";
+        initAtWed = " ";
+        initAtThu = " ";
+        initAtFri = "1";
+        initAtSat = "2";
+      } else if (dateFormat == "Saturday") {
+        initAtSun = "2";
+        initAtMon = " ";
+        initAtTue = " ";
+        initAtWed = " ";
+        initAtThu = " ";
+        initAtFri = " ";
+        initAtSat = "1";
+      } else if (dateFormat == "Sunday") {
+        initAtSun = "1";
+        initAtMon = " ";
+        initAtTue = " ";
+        initAtWed = " ";
+        initAtThu = " ";
+        initAtFri = " ";
+        initAtSat = " ";
+      }
+    }
+
     return Column(
       children: <Widget>[
         const Text(
@@ -68,7 +135,12 @@ class CalenderSec extends StatelessWidget {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Expanded(
-            child: ListView.builder(
+            child: ListView.separated(
+          separatorBuilder: (context, i) {
+            return const SizedBox(
+              width: 20,
+            );
+          },
           itemCount: monthName.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, i) {
@@ -114,13 +186,14 @@ class CalenderSec extends StatelessWidget {
                 dateInput44,
                 dateInput45,
                 dateInput46;
-            dateInput0 = " ";
-            dateInput1 = " ";
-            dateInput2 = " ";
-            dateInput3 = " ";
-            dateInput4 = " ";
-            dateInput5 = "1";
-            dateInput6 = "2";
+            initializer(i + 1, now.year);
+            dateInput0 = initAtMon;
+            dateInput1 = initAtTue;
+            dateInput2 = initAtWed;
+            dateInput3 = initAtThu;
+            dateInput4 = initAtFri;
+            dateInput5 = initAtSat;
+            dateInput6 = initAtSun;
             dateInput00 = adding(dateInput6);
             dateInput01 = adding(dateInput00);
             dateInput02 = adding(dateInput01);
@@ -158,35 +231,20 @@ class CalenderSec extends StatelessWidget {
             dateInput46 = weekDates(dateInput36, i);
             return Container(
               width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 40),
-              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 40),
               decoration: BoxDecoration(
                   color: primaryColor,
                   boxShadow: coustomShadow,
                   borderRadius: BorderRadius.circular(20)),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        monthName[i],
-                        style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400,
-                            wordSpacing: 20),
-                      ),
-                      const Text(
-                        "  ",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w400),
-                      ),
-                      Text(
-                        year.toString(),
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w400),
-                      ),
-                    ],
+                  Text(
+                    '${monthName[i]} $year',
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        wordSpacing: 20),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 30),
@@ -233,665 +291,91 @@ class CalenderSec extends StatelessWidget {
                           ],
                         ),
                         Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  left: 7, top: 15, right: 42, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Stack(
-                                children: <Widget>[
-                                  Text(
-                                    dateInput0,
-                                    style: const TextStyle(
-                                        fontSize: 20, wordSpacing: 10),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  top: 15, right: 45, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Stack(
-                                children: <Widget>[
-                                  Text(
-                                    dateInput1,
-                                    style: const TextStyle(
-                                        fontSize: 20, wordSpacing: 10),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  top: 15, right: 42, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Stack(
-                                children: <Widget>[
-                                  Text(
-                                    dateInput2,
-                                    style: const TextStyle(
-                                        fontSize: 20, wordSpacing: 10),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 42, top: 15, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Stack(
-                                children: <Widget>[
-                                  Text(
-                                    dateInput3,
-                                    style: const TextStyle(
-                                        fontSize: 20, wordSpacing: 10),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 36, top: 10, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Stack(
-                                children: <Widget>[
-                                  Text(
-                                    dateInput4,
-                                    style: const TextStyle(
-                                        fontSize: 20, wordSpacing: 10),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 41, top: 10, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Stack(
-                                children: <Widget>[
-                                  Text(
-                                    dateInput5,
-                                    style: const TextStyle(
-                                        fontSize: 20, wordSpacing: 10),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 10, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Stack(
-                                children: <Widget>[
-                                  Text(
-                                    dateInput6,
-                                    style: const TextStyle(
-                                        fontSize: 20, wordSpacing: 10),
-                                  ),
-                                ],
-                              ),
+                            Day(date: dateInput0),
+                            Day(date: dateInput1),
+                            Day(date: dateInput2),
+                            Day(date: dateInput3),
+                            Day(date: dateInput4),
+                            Day(date: dateInput5),
+                            Day(
+                              date: dateInput6,
+                              rightMargin: 0,
                             ),
                           ],
                         ),
                         Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  left: 7, top: 5, right: 42, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput00,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  top: 5, right: 45, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput01,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  top: 5, right: 42, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput02,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 42, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput03,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 36, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput04,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 41, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput05,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput06,
-                                style: const TextStyle(fontSize: 20),
-                              ),
+                            Day(date: dateInput00),
+                            Day(date: dateInput01),
+                            Day(date: dateInput02),
+                            Day(date: dateInput03),
+                            Day(date: dateInput04),
+                            Day(date: dateInput05),
+                            Day(
+                              date: dateInput06,
+                              rightMargin: 0,
                             ),
                           ],
                         ),
                         Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  left: 7, right: 42, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput10,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 45, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput11,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 42, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput12,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 42, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput13,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 36, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput14,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 41, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput15,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput16,
-                                style: const TextStyle(fontSize: 20),
-                              ),
+                            Day(date: dateInput10),
+                            Day(date: dateInput11),
+                            Day(date: dateInput12),
+                            Day(date: dateInput13),
+                            Day(date: dateInput14),
+                            Day(date: dateInput15),
+                            Day(
+                              date: dateInput16,
+                              rightMargin: 0,
                             ),
                           ],
                         ),
                         Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  left: 7, right: 42, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput20,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 45, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput21,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 42, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput22,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 42, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput23,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 36, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput24,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 41, top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput25,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 5, bottom: 5),
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  shape: BoxShape.rectangle),
-                              child: Text(
-                                dateInput26,
-                                style: const TextStyle(fontSize: 20),
-                              ),
+                            Day(date: dateInput20),
+                            Day(date: dateInput21),
+                            Day(date: dateInput22),
+                            Day(date: dateInput23),
+                            Day(date: dateInput24),
+                            Day(date: dateInput25),
+                            Day(
+                              date: dateInput26,
+                              rightMargin: 0,
                             ),
                           ],
                         ),
                         Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 7, right: 42, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput30,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 45, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput31,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 42, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput32,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 42, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput33,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 36, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput34,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 41, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput35,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput36,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
+                            Day(date: dateInput30),
+                            Day(date: dateInput31),
+                            Day(date: dateInput32),
+                            Day(date: dateInput33),
+                            Day(date: dateInput34),
+                            Day(date: dateInput35),
+                            Day(
+                              date: dateInput36,
+                              rightMargin: 0,
                             ),
                           ],
                         ),
                         Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 7, right: 42, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput40,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 45, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput41,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 42, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput42,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 42, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput43,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 36, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput44,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 41, top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput45,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 5, bottom: 5),
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.rectangle),
-                                  child: Text(
-                                    dateInput46,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
+                            Day(date: dateInput40),
+                            Day(date: dateInput41),
+                            Day(date: dateInput42),
+                            Day(date: dateInput43),
+                            Day(date: dateInput44),
+                            Day(date: dateInput45),
+                            Day(
+                              date: dateInput46,
                             ),
                           ],
                         ),
@@ -904,6 +388,31 @@ class CalenderSec extends StatelessWidget {
           },
         ))
       ],
+    );
+  }
+}
+
+class Day extends StatelessWidget {
+  const Day({
+    Key? key,
+    required this.date,
+    this.rightMargin = 45.0,
+  }) : super(key: key);
+
+  final String date;
+  final double rightMargin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 5, right: rightMargin, bottom: 5),
+      child: GestureDetector(
+        onTap: () {},
+        child: Text(
+          date,
+          style: const TextStyle(fontSize: 15),
+        ),
+      ),
     );
   }
 }

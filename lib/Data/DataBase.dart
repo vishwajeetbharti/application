@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:path/path.dart';
@@ -5,14 +6,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DataBaseHelper {
-  static const _dbname = 'MyDatabase.db';
+  static const _dbname = 'mydatabase.db';
   static const _dbVersion = 1;
-  static const _tableName = 'Mytable';
-
-  static const columnId = '_id';
-  static const columnName = 'Past';
-  static const columnName2 = 'Prediction';
-  static const columnName3 = 'Satatics';
+  static const _tableName = 'user_details';
 
   DataBaseHelper._privateConstructor();
   static final DataBaseHelper instance = DataBaseHelper._privateConstructor();
@@ -20,32 +16,38 @@ class DataBaseHelper {
   Future<Database> get database async {
     Database database;
     database = await _initiateDatabase();
-    if (database != null) return database;
-    database = await _initiateDatabase();
     return database;
   }
 
-  _initiateDatabase() async {
+  Future<Database> _initiateDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path, _dbname);
-    await openDatabase(path, version: _dbVersion, onCreate: _onCreate);
+    log(path);
+    return await openDatabase(path, version: _dbVersion, onCreate: _onCreate);
   }
 
   _onCreate(Database db, int version) {
-    db.query(''' 
-      CREATE TABLE $_tableName( 
-      $columnId INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-      $columnName DATE,
-      $columnName2 DATE,
-      $columnName3 INTEGER
+    db.execute(''' 
+      CREATE TABLE IF NOT EXISTS user_details( 
+      name TEXT PRIMARY KEY,
+      date TEXT,
+      average_day INTEGER
       )
-      
-      
       ''');
   }
 
   Future<int> insert(Map<String, dynamic> row) async {
     Database db = await instance.database;
-    return await db.insert(_tableName, row);
+    int id = await db.insert(_tableName, row);
+    db.close();
+    return id;
+  }
+
+  Future<List<Map<String, dynamic>>> read(Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> data =
+        await db.query(_tableName, columns: ['name']);
+    db.close();
+    return data;
   }
 }

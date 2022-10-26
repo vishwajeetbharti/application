@@ -1,4 +1,3 @@
-import 'package:application/Data/mainData.dart';
 import 'package:application/data.dart';
 import 'package:flutter/material.dart';
 
@@ -20,10 +19,10 @@ class HeaderBar extends StatelessWidget {
               child: Icon(Icons.arrow_back_ios),
             ),
           ),
-          Text(
-            Strings.Yourname,
-            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
+          // Text(
+          //   Strings.Yourname,
+          //   style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          // ),
           Container(
             height: 60,
             width: 60,

@@ -18,7 +18,7 @@ class Calender extends StatelessWidget {
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.60,
-            child: const CalenderSec(),
+            child: CalenderSec(),
           ),
         ],
       ),

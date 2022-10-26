@@ -1,14 +1,33 @@
 import 'package:application/Calender.dart';
-import 'package:application/Data/mainData.dart';
 import 'package:application/Widget/Drawer.dart';
 import 'package:application/data.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'Data/mainData.dart';
 
 bool indStat = true;
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String myVariable = '';
+  void initiate() async {
+    final prefs = await SharedPreferences.getInstance();
+    myVariable = prefs.getString(Strings.name)!;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initiate();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +37,9 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
-          Strings.Yourname,
-          style: const TextStyle(color: Colors.black),
+          myVariable,
+          style: const TextStyle(
+              fontSize: 25, fontWeight: FontWeight.w300, color: Colors.indigo),
         ),
         backgroundColor: primaryColor,
         actions: <Widget>[

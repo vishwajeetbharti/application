@@ -40,11 +40,10 @@ class Record extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
+          Expanded(
             child: ListView.builder(
-                itemCount: 5,
+                itemCount: 15,
                 scrollDirection: Axis.vertical,
-                shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                       leading: const Icon(Icons.list),
