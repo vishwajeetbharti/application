@@ -11,6 +11,7 @@ class CalenderSec extends StatefulWidget {
 }
 
 class _CalenderSecState extends State<CalenderSec> {
+  final PageController _controller = PageController();
   DateTime now = DateTime.now();
 
   String selectedDate = '';
@@ -23,6 +24,11 @@ class _CalenderSecState extends State<CalenderSec> {
       selectedDate = date;
       selectedMonth = month;
     });
+  }
+
+  void _scrollDown() {
+    _controller.animateTo(now.month.toDouble(),
+        duration: Duration(seconds: 5), curve: Curves.bounceInOut);
   }
 
   @override
@@ -156,15 +162,18 @@ class _CalenderSecState extends State<CalenderSec> {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Expanded(
-            child: ListView.separated(
-          separatorBuilder: (context, i) {
-            return const SizedBox(
-              width: 20,
-            );
-          },
+            child: PageView.builder(
+          // separatorBuilder: (context, i) {
+          //   return const SizedBox(
+          //     width: 20,
+          //   );
+          // },
+          controller: _controller,
+
           itemCount: monthName.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, i) {
+            _scrollDown();
             String dateInput0,
                 dateInput1,
                 dateInput2,
@@ -250,450 +259,453 @@ class _CalenderSecState extends State<CalenderSec> {
             dateInput44 = weekDates(dateInput34, i);
             dateInput45 = weekDates(dateInput35, i);
             dateInput46 = weekDates(dateInput36, i);
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 40),
-              decoration: BoxDecoration(
-                  color: primaryColor,
-                  boxShadow: coustomShadow,
-                  borderRadius: BorderRadius.circular(20)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${monthName[i]} $year',
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        wordSpacing: 20),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 30),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
-                              "Mon",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "Tue",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "Wed",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "Thu",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "Fri",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "Sat",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "Sun",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w300),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Day(
-                              date: dateInput0,
-                              selectedDate: selectedDate,
-                              todayDate: todayDate,
-                              todayMonth: todayMonth,
-                              month: monthName[i],
-                              selectedMonth: selectedMonth,
-                              onDateSelected: _updateSelectedDate,
-                            ),
-                            Day(
-                              date: dateInput1,
-                              selectedDate: selectedDate,
-                              todayDate: todayDate,
-                              todayMonth: todayMonth,
-                              month: monthName[i],
-                              selectedMonth: selectedMonth,
-                              onDateSelected: _updateSelectedDate,
-                            ),
-                            Day(
-                              date: dateInput2,
-                              selectedDate: selectedDate,
-                              todayDate: todayDate,
-                              todayMonth: todayMonth,
-                              month: monthName[i],
-                              selectedMonth: selectedMonth,
-                              onDateSelected: _updateSelectedDate,
-                            ),
-                            Day(
-                              date: dateInput3,
-                              selectedDate: selectedDate,
-                              todayDate: todayDate,
-                              todayMonth: todayMonth,
-                              month: monthName[i],
-                              selectedMonth: selectedMonth,
-                              onDateSelected: _updateSelectedDate,
-                            ),
-                            Day(
-                              date: dateInput4,
-                              selectedDate: selectedDate,
-                              todayDate: todayDate,
-                              todayMonth: todayMonth,
-                              month: monthName[i],
-                              selectedMonth: selectedMonth,
-                              onDateSelected: _updateSelectedDate,
-                            ),
-                            Day(
-                              date: dateInput5,
-                              selectedDate: selectedDate,
-                              todayDate: todayDate,
-                              todayMonth: todayMonth,
-                              month: monthName[i],
-                              selectedMonth: selectedMonth,
-                              onDateSelected: _updateSelectedDate,
-                            ),
-                            Day(
-                              rightMargin: 0,
-                              date: dateInput6,
-                              selectedDate: selectedDate,
-                              todayDate: todayDate,
-                              todayMonth: todayMonth,
-                              month: monthName[i],
-                              selectedMonth: selectedMonth,
-                              onDateSelected: _updateSelectedDate,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Day(
-                                date: dateInput00,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput01,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput02,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput03,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput04,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput05,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput06,
-                                rightMargin: 0,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Day(
-                                date: dateInput10,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput11,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput12,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput13,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput14,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput15,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput16,
-                                rightMargin: 0,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Day(
-                                date: dateInput20,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput21,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput22,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput23,
-                                selectedDate: selectedDate,
-                                month: monthName[i],
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput24,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput25,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput26,
-                                rightMargin: 0,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Day(
-                                date: dateInput30,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput31,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput32,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput33,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput34,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput35,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                selectedDate: selectedDate,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput36,
-                                rightMargin: 0,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Day(
-                                date: dateInput40,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput41,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput42,
-                                selectedDate: selectedDate,
-                                month: monthName[i],
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput43,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput44,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput45,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                            Day(
-                                date: dateInput46,
-                                rightMargin: 0,
-                                selectedDate: selectedDate,
-                                todayDate: todayDate,
-                                todayMonth: todayMonth,
-                                month: monthName[i],
-                                selectedMonth: selectedMonth,
-                                onDateSelected: _updateSelectedDate),
-                          ],
-                        ),
-                      ],
+            return Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 40),
+                decoration: BoxDecoration(
+                    color: primaryColor,
+                    boxShadow: coustomShadow,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${monthName[i]} $year',
+                      style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          wordSpacing: 20),
                     ),
-                  ),
-                ],
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 30),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text(
+                                "Mon",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "Tue",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "Wed",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "Thu",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "Fri",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "Sat",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "Sun",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w300),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Day(
+                                date: dateInput0,
+                                selectedDate: selectedDate,
+                                todayDate: todayDate,
+                                todayMonth: todayMonth,
+                                month: monthName[i],
+                                selectedMonth: selectedMonth,
+                                onDateSelected: _updateSelectedDate,
+                              ),
+                              Day(
+                                date: dateInput1,
+                                selectedDate: selectedDate,
+                                todayDate: todayDate,
+                                todayMonth: todayMonth,
+                                month: monthName[i],
+                                selectedMonth: selectedMonth,
+                                onDateSelected: _updateSelectedDate,
+                              ),
+                              Day(
+                                date: dateInput2,
+                                selectedDate: selectedDate,
+                                todayDate: todayDate,
+                                todayMonth: todayMonth,
+                                month: monthName[i],
+                                selectedMonth: selectedMonth,
+                                onDateSelected: _updateSelectedDate,
+                              ),
+                              Day(
+                                date: dateInput3,
+                                selectedDate: selectedDate,
+                                todayDate: todayDate,
+                                todayMonth: todayMonth,
+                                month: monthName[i],
+                                selectedMonth: selectedMonth,
+                                onDateSelected: _updateSelectedDate,
+                              ),
+                              Day(
+                                date: dateInput4,
+                                selectedDate: selectedDate,
+                                todayDate: todayDate,
+                                todayMonth: todayMonth,
+                                month: monthName[i],
+                                selectedMonth: selectedMonth,
+                                onDateSelected: _updateSelectedDate,
+                              ),
+                              Day(
+                                date: dateInput5,
+                                selectedDate: selectedDate,
+                                todayDate: todayDate,
+                                todayMonth: todayMonth,
+                                month: monthName[i],
+                                selectedMonth: selectedMonth,
+                                onDateSelected: _updateSelectedDate,
+                              ),
+                              Day(
+                                rightMargin: 0,
+                                date: dateInput6,
+                                selectedDate: selectedDate,
+                                todayDate: todayDate,
+                                todayMonth: todayMonth,
+                                month: monthName[i],
+                                selectedMonth: selectedMonth,
+                                onDateSelected: _updateSelectedDate,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Day(
+                                  date: dateInput00,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput01,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput02,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput03,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput04,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput05,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput06,
+                                  rightMargin: 0,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Day(
+                                  date: dateInput10,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput11,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput12,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput13,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput14,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput15,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput16,
+                                  rightMargin: 0,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Day(
+                                  date: dateInput20,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput21,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput22,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput23,
+                                  selectedDate: selectedDate,
+                                  month: monthName[i],
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput24,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput25,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput26,
+                                  rightMargin: 0,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Day(
+                                  date: dateInput30,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput31,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput32,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput33,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput34,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput35,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  selectedDate: selectedDate,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput36,
+                                  rightMargin: 0,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Day(
+                                  date: dateInput40,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput41,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput42,
+                                  selectedDate: selectedDate,
+                                  month: monthName[i],
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput43,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput44,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput45,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                              Day(
+                                  date: dateInput46,
+                                  rightMargin: 0,
+                                  selectedDate: selectedDate,
+                                  todayDate: todayDate,
+                                  todayMonth: todayMonth,
+                                  month: monthName[i],
+                                  selectedMonth: selectedMonth,
+                                  onDateSelected: _updateSelectedDate),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -745,7 +757,7 @@ class _DayState extends State<Day> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
+    // DateTime now = DateTime.now();
     return GestureDetector(
       onTap: () {
         widget.onDateSelected.call(widget.date, widget.month);
