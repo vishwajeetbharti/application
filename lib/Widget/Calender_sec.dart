@@ -11,24 +11,19 @@ class CalenderSec extends StatefulWidget {
 }
 
 class _CalenderSecState extends State<CalenderSec> {
-  final PageController _controller = PageController();
   DateTime now = DateTime.now();
 
   String selectedDate = '';
   String selectedMonth = '';
   String todayDate = '';
   String todayMonth = '';
+  late int month = now.month;
 
   _updateSelectedDate(String date, String month) {
     setState(() {
       selectedDate = date;
       selectedMonth = month;
     });
-  }
-
-  void _scrollDown() {
-    _controller.animateTo(now.month.toDouble(),
-        duration: Duration(seconds: 5), curve: Curves.bounceInOut);
   }
 
   @override
@@ -168,12 +163,12 @@ class _CalenderSecState extends State<CalenderSec> {
           //     width: 20,
           //   );
           // },
-          controller: _controller,
+
+          controller: PageController(initialPage: month - 1, keepPage: false),
 
           itemCount: monthName.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, i) {
-            _scrollDown();
             String dateInput0,
                 dateInput1,
                 dateInput2,
