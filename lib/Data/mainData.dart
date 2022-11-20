@@ -5,4 +5,8 @@ class Strings {
   static const average = 'average';
   static const date = 'date';
   static const name = 'name';
+  static String avaVariable = '';
+  static String dateVariable = '';
+  static String predictionDateVariable = '';
+  static String myVariable = '';
 }

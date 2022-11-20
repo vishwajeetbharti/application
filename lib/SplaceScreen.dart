@@ -1,10 +1,11 @@
 import 'package:application/Data/mainData.dart';
-import 'package:application/data.dart';
+import 'package:application/Data/repository/data.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'home_Page.dart';
+import 'Screen/home_Page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -42,10 +43,13 @@ class _LoginState extends State<Login> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController averageDayController = TextEditingController();
+  final format = DateFormat('dd-MM-yyyy');
+  late String milliSecondTime = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
@@ -75,30 +79,45 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        onTap: () {
-                          showDatePicker(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.06,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black45),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(3)),
+                          ),
+                          child: DateTimeField(
+                            initialValue: DateTime.now(),
+                            format: format,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                            onShowPicker:
+                                (BuildContext context, newDate) async {
+                              final date = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2025))
-                              .then((date) {
-                            if (date != null) {
-                              dateController.text =
-                                  DateFormat('dd-mm-yyyy').format(date);
-                            }
-                          });
-                        },
-                        controller: dateController,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.purpleAccent, width: 1.0)),
-                            labelText: Strings.upDate,
-                            hintText: "Date"),
-                      ),
-                    ),
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime(2100));
+                              if (date != null) {
+                                final time = await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.fromDateTime(
+                                        newDate ?? DateTime.now()));
+                                setState(() {
+                                  milliSecondTime =
+                                      DateTimeField.combine(date, time)
+                                          .millisecondsSinceEpoch
+                                          .toString();
+                                });
+                                return DateTimeField.combine(date, time);
+                              } else {
+                                return DateTime.now();
+                              }
+                            },
+                          ),
+                        )),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
@@ -121,7 +140,7 @@ class _LoginState extends State<Login> {
                         onPressed: () async {
                           final prefs = await SharedPreferences.getInstance();
                           prefs.setString(Strings.name, nameController.text);
-                          prefs.setString(Strings.date, dateController.text);
+                          prefs.setString(Strings.date, milliSecondTime);
                           prefs.setString(
                               Strings.average, averageDayController.text);
                           if (!mounted) return;
@@ -145,5 +164,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-
-//class MyDatabase extends

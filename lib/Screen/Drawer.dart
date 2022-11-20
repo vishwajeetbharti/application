@@ -1,6 +1,6 @@
-import 'package:application/Records.dart';
-import 'package:application/Widget/aboutUs.dart';
-import 'package:application/profile.dart';
+import 'package:application/Screen/Records.dart';
+import 'package:application/Screen/aboutUs.dart';
+import 'package:application/Screen/profile.dart';
 import 'package:flutter/material.dart';
 
 class DrawerMain extends StatelessWidget {

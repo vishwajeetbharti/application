@@ -1,8 +1,9 @@
-import 'package:application/data.dart';
+import 'package:application/Data/repository/data.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Data/mainData.dart';
+import '../Data/mainData.dart';
 
 class Record extends StatefulWidget {
   const Record({Key? key}) : super(key: key);
@@ -12,13 +13,15 @@ class Record extends StatefulWidget {
 }
 
 class _RecordState extends State<Record> {
-  String avaVariable = '';
-  String dateVariable = '';
   void initiate() async {
     final prefs = await SharedPreferences.getInstance();
-    avaVariable = prefs.getString(Strings.average)!;
-    dateVariable = prefs.getString(Strings.date)!;
-    print(avaVariable);
+    Strings.avaVariable = prefs.getString(Strings.average)!;
+    var dt = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(prefs.getString(Strings.date)!));
+    Strings.dateVariable = DateFormat('dd-MM-yy').format(dt);
+    var dt2 = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(prefs.getString(Strings.date)!) + 2419200000);
+    Strings.predictionDateVariable = DateFormat('dd-MM-yy').format(dt2);
   }
 
   @override
@@ -80,22 +83,23 @@ class _RecordState extends State<Record> {
                           width: MediaQuery.of(context).size.width * 0.2,
                           margin: const EdgeInsets.only(left: 20),
                           child: Text(
-                            dateVariable,
+                            Strings.dateVariable,
                             style: const TextStyle(
                                 fontSize: 20, color: Colors.black),
                           ),
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 80),
-                          child: const Text(
-                            "dd-mm-yy",
-                            style: TextStyle(fontSize: 20, color: Colors.black),
+                          child: Text(
+                            Strings.predictionDateVariable,
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.black),
                           ),
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 90),
                           child: Text(
-                            avaVariable,
+                            Strings.avaVariable,
                             style: const TextStyle(
                                 fontSize: 20, color: Colors.black),
                           ),

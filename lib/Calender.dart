@@ -1,6 +1,6 @@
-import 'package:application/Widget/Calender_sec.dart';
-import 'package:application/Widget/Header_bar.dart';
-import 'package:application/data.dart';
+import 'package:application/Data/repository/data.dart';
+import 'package:application/Screen/Calender_sec.dart';
+import 'package:application/Screen/Header_bar.dart';
 import 'package:flutter/material.dart';
 
 class Calender extends StatelessWidget {
@@ -18,7 +18,7 @@ class Calender extends StatelessWidget {
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.60,
-            child: CalenderSec(),
+            child: const CalenderSec(),
           ),
         ],
       ),

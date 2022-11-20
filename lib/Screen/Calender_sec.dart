@@ -1,5 +1,5 @@
 import 'package:application/Data/color.dart';
-import 'package:application/data.dart';
+import 'package:application/Data/repository/data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

@@ -1,11 +1,11 @@
 import 'package:application/Calender.dart';
-import 'package:application/Widget/Drawer.dart';
-import 'package:application/data.dart';
+import 'package:application/Data/repository/data.dart';
+import 'package:application/Screen/Drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Data/mainData.dart';
+import '../Data/mainData.dart';
 
 bool indStat = true;
 
@@ -17,10 +17,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String myVariable = '';
   void initiate() async {
     final prefs = await SharedPreferences.getInstance();
-    myVariable = prefs.getString(Strings.name)!;
+    Strings.myVariable = prefs.getString(Strings.name)!;
   }
 
   @override
@@ -37,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
-          myVariable,
+          Strings.myVariable,
           style: const TextStyle(
               fontSize: 25, fontWeight: FontWeight.w300, color: Colors.indigo),
         ),
