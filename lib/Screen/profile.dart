@@ -1,7 +1,7 @@
-import 'package:application/Data/repository/data.dart';
+import 'package:application/Data/data.dart';
 import 'package:flutter/material.dart';
 
-import '../Data/mainData.dart';
+import '../Data/string.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -45,7 +45,7 @@ class Profile extends StatelessWidget {
                   top: MediaQuery.of(context).size.height * 0.01,
                 ),
                 child: Text(
-                  Strings.myVariable,
+                  Strings.userName,
                   style: const TextStyle(fontSize: 25),
                 ),
               )

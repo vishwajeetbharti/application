@@ -8,7 +8,16 @@ import 'package:sqflite/sqflite.dart';
 class DataBaseHelper {
   static const _dbname = 'mydatabase.db';
   static const _dbVersion = 1;
-  static const _tableName = 'user_details';
+  static const _userDetails = 'user_details';
+  static const _userData = 'user_data';
+  static const name = 'name';
+  static const sNo = 'Sno';
+  static const startDate = 'start';
+  static const endDate = 'end';
+  static const averageDay = 'average_day';
+  static const prediction = 'prediction';
+  static const duration = 'duration';
+  static const start = 'start';
 
   DataBaseHelper._privateConstructor();
   static final DataBaseHelper instance = DataBaseHelper._privateConstructor();
@@ -28,26 +37,54 @@ class DataBaseHelper {
 
   _onCreate(Database db, int version) {
     db.execute(''' 
-      CREATE TABLE IF NOT EXISTS user_details( 
-      name TEXT PRIMARY KEY,
-      date TEXT,
-      average_day INTEGER
+      CREATE TABLE IF NOT EXISTS $_userDetails( 
+      $name TEXT PRIMARY KEY,
+      $startDate TEXT,
+      $endDate TEXT,
+      $averageDay INTEGER
       )
       ''');
+    db.execute('''
+    CREATE TABLE IF NOT EXISTS $_userData(
+    $sNo INTEGER PRIMARY KEY,
+    $startDate DATE,
+    $endDate DATE,
+    $duration INTEGER,
+    $name REFERENCES $_userDetails($name) ON DELETE CASCADE
+    )
+    ''');
   }
 
-  Future<int> insert(Map<String, dynamic> row) async {
-    Database db = await instance.database;
-    int id = await db.insert(_tableName, row);
-    db.close();
-    return id;
+  insertUserDetails(Map<String, dynamic> row) async {
+    try {
+      Database db = await instance.database;
+      return await db.insert(_userDetails, row);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 
-  Future<List<Map<String, dynamic>>> read(Map<String, dynamic> row) async {
+  insertUserData(Map<String, dynamic> row) async {
+    try {
+      Database db = await instance.database;
+      return await db.insert(_userData, row);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  toDeleteData(String date) async {
     Database db = await instance.database;
-    List<Map<String, dynamic>> data =
-        await db.query(_tableName, columns: ['name']);
-    db.close();
-    return data;
+    return await db.delete(_userData, where: '$endDate=?', whereArgs: [date]);
+  }
+
+  Future<List<Map<String, dynamic>>> getData() async {
+    Database db = await instance.database;
+    return await db.query(_userData);
+  }
+
+  Future<List<Map<String, dynamic>>> getUserDetails() async {
+    Database db = await instance.database;
+    return await db.query(_userDetails);
   }
 }

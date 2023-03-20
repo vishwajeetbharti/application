@@ -3,11 +3,16 @@ import 'package:application/Screen/aboutUs.dart';
 import 'package:application/Screen/profile.dart';
 import 'package:flutter/material.dart';
 
+import '../Data/string.dart';
+import '../bloc/bloc_func.dart';
+
 class DrawerMain extends StatelessWidget {
-  const DrawerMain({Key? key}) : super(key: key);
+  DrawerMain({Key? key}) : super(key: key);
+  final PhaseManagement _management = PhaseManagement();
 
   @override
   Widget build(BuildContext context) {
+    _management.add(RecordsPhase());
     return SizedBox(
       width: 200,
       child: Drawer(
@@ -45,7 +50,8 @@ class DrawerMain extends StatelessWidget {
                 Navigator.push<void>(
                   context,
                   MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const Record()),
+                      builder: (BuildContext context) =>
+                          Record(record: recordsList)),
                 );
                 // Navigator.pop(context);
               },
