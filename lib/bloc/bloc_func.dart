@@ -100,14 +100,11 @@ class PhaseManagement extends Bloc<EventFunctions, StateFunctions> {
         });
   }
   recordsPhase() async {
+    recordsList.clear();
     await dataBase.getData().then((value) {
       recordsList.addAll(value);
       controller.sink.add(recordsList);
     });
-    print(recordsList[0]["end"]);
-    print("1111111111111111111111111111111111");
-
-    print("1111111111111111111111111111111111");
   }
 
   compareDate(DateTime enterDate) {
@@ -144,31 +141,20 @@ class PhaseManagement extends Bloc<EventFunctions, StateFunctions> {
     }
   }
 
-  upDateDuration(String name, int index, int averageDay, DateTime endDate,
-      DateTime startDate) async {
+  upDateDuration(String name, int index, int averageDay, DateTime endDate,DateTime startDate) async {
     DateTime eDate = endDate;
-    print(
-        "lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
-    print("$index+$startDate+$endDate");
     Duration diff = endDate.difference(startDate);
     try {
       dataBase.toUpDateData(index, {
-        DataBaseHelper.name: name,
-        DataBaseHelper.sNo: index,
         DataBaseHelper.diff: diff.toString(),
         DataBaseHelper.start: DateFormat('yyyy-MM-dd').format(startDate),
         DataBaseHelper.endDate: DateFormat('yyyy-MM-dd').format(endDate),
         DataBaseHelper.duration: averageDay
       });
       for (int i = index + 1; i < 12; i++) {
-        print(i);
         DateTime sDate = eDate.add(Duration(days: averageDay));
-        print(sDate);
         DateTime newEDate = sDate.add(diff);
-        print(newEDate);
         dataBase.toUpDateData(i, {
-          DataBaseHelper.name: name,
-          DataBaseHelper.sNo: i,
           DataBaseHelper.diff: diff.toString(),
           DataBaseHelper.start: DateFormat('yyyy-MM-dd').format(sDate),
           DataBaseHelper.endDate: DateFormat('yyyy-MM-dd').format(newEDate),
@@ -176,9 +162,7 @@ class PhaseManagement extends Bloc<EventFunctions, StateFunctions> {
         });
 
         eDate = newEDate;
-        print("object");
       }
-      recordsList = await dataBase.getData();
     } catch (e) {
       if (kDebugMode) {
         print(e.toString());
@@ -186,7 +170,37 @@ class PhaseManagement extends Bloc<EventFunctions, StateFunctions> {
     }
   }
 
-  upDateStartDate(int index, DateTime previousEndDate, DateTime startDate) {
+  upDateStartDate(int index, DateTime previousEndDate,DateTime startDate,DateTime previousStartDate) {
+    Duration avg = startDate.difference(previousEndDate);
+    Duration diff = previousEndDate.difference(previousStartDate);
+    DateTime sDate= startDate;
+    DateTime eDate= startDate.add(diff);
+    print("kkiiiiiifihshfshfehhehehehiefhiehfiehfiheifheihfeihfiehfiehfahfhfwfihafoihaf");
+    print(avg.inDays);
+    try{
+      dataBase.toUpDateData(index, {
+        DataBaseHelper.diff: diff.toString(),
+        DataBaseHelper.start: DateFormat('yyyy-MM-dd').format(sDate),
+        DataBaseHelper.endDate: DateFormat('yyyy-MM-dd').format(eDate),
+        DataBaseHelper.duration: avg.inDays.toString()
+      });
+      for (int i = index + 1; i < 12; i++) {
+        DateTime sDate = eDate.add(avg);
+        DateTime newEDate = sDate.add(diff);
+        dataBase.toUpDateData(i, {
+          DataBaseHelper.diff: diff.toString(),
+          DataBaseHelper.start: DateFormat('yyyy-MM-dd').format(sDate),
+          DataBaseHelper.endDate: DateFormat('yyyy-MM-dd').format(newEDate),
+          DataBaseHelper.duration: avg.toString()
+        });
+        eDate = newEDate;
+      }
+    }catch(e){
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
+
     for (int j = 0; j < recordsList.length; j++) {
       print(recordsList[j]["Sno"]);
       print(recordsList[j]["start"]);

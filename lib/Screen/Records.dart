@@ -45,22 +45,30 @@ class _RecordState extends State<Record> {
       body: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text(
-                Strings.startDate,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              Padding(
+                padding: const EdgeInsets.only(left: 45),
+                child: Text(
+                  Strings.startDate,
+                  style:
+                      const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                ),
               ),
-              Text(
-                Strings.endDate,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              Padding(
+                padding: const EdgeInsets.only(left: 110),
+                child: Text(
+                  Strings.endDate,
+                  style:
+                      const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                ),
               ),
-              Text(
-                Strings.durationDays,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              Padding(
+                padding: const EdgeInsets.only(left: 90),
+                child: Text(
+                  Strings.durationDays,
+                  style:
+                      const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                ),
               ),
             ],
           ),
@@ -72,7 +80,7 @@ class _RecordState extends State<Record> {
                   print(snapshot.connectionState);
                   if (!snapshot.hasData) {
                     return const Center(
-                      child: Text("Null !!!"),
+                      child: Text("Something went wrung"),
                     );
                   } else {
                     return ListView.builder(
@@ -93,13 +101,12 @@ class _RecordState extends State<Record> {
                                         context, index, Strings.startDate);
                                   },
                                   child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.2,
+
                                     margin: const EdgeInsets.only(left: 20),
                                     child: Text(
                                       snapshot.data![index]['start'],
                                       style: const TextStyle(
-                                          fontSize: 20, color: Colors.black),
+                                          fontSize: 15, color: Colors.black),
                                     ),
                                   ),
                                 ),
@@ -109,11 +116,11 @@ class _RecordState extends State<Record> {
                                         context, index, Strings.endDate);
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.only(left: 80),
+                                    margin: const EdgeInsets.only(left: 60),
                                     child: Text(
                                       snapshot.data![index]['end'],
                                       style: const TextStyle(
-                                          fontSize: 20, color: Colors.black),
+                                          fontSize: 15, color: Colors.black),
                                     ),
                                   ),
                                 ),
@@ -126,7 +133,7 @@ class _RecordState extends State<Record> {
                                     child: Text(
                                       "${snapshot.data![index]['duration']}",
                                       style: const TextStyle(
-                                          fontSize: 20, color: Colors.black),
+                                          fontSize: 15, color: Colors.black),
                                     ),
                                   ),
                                 ),
@@ -159,6 +166,8 @@ class _RecordState extends State<Record> {
                           keyboardType: TextInputType.number,
                           maxLength: 2,
                           controller: averageDayController,
+                          style: const TextStyle(color: Colors.black
+                          ),
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -200,7 +209,7 @@ class _RecordState extends State<Record> {
                                                   int.parse(
                                                       milliSecondStartTime))),
                                       style: const TextStyle(
-                                          fontSize: 16, color: Colors.black54),
+                                          fontSize: 16, color: Colors.black),
                                     ),
                                   )),
                             )
@@ -222,7 +231,7 @@ class _RecordState extends State<Record> {
                                   height:
                                       MediaQuery.of(context).size.height * 0.05,
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black45),
+                                    border: Border.all(color: Colors.black),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(3)),
                                   ),
@@ -259,30 +268,24 @@ class _RecordState extends State<Record> {
                       date == ""
                           ? _management.upDateDuration(
                               recordsList[index]['name'],
-                              index,
+                              recordsList[index]['Sno'],
                               int.parse(averageDayController.text),
                               DateTime.parse(recordsList[index]['end']),
-                              DateTime.parse(recordsList[index]['start']))
+                              DateTime.parse(recordsList[index]['start'],),)
                           : date == Strings.startDate
-                              ? _management.upDateStartDate(
-                                  index,
-                                  recordsList[index - 1]['end'],
-                                  DateTime.fromMillisecondsSinceEpoch(
-                                      int.parse(milliSecondStartTime)))
+                              ? _management.upDateStartDate(index,DateTime.parse(recordsList[index==0?index:index-1]['end']),
+                       DateTime.fromMillisecondsSinceEpoch(int.parse(milliSecondStartTime)),DateTime.parse(recordsList[index==0?index:index-1]['start']))
                               : _management.upDateEndDate(
                                   index,
                                   recordsList[index]['start'],
                                   DateTime.fromMillisecondsSinceEpoch(
-                                      int.parse(milliSecondEndTime)));
+                                      int.parse(milliSecondEndTime),),);
                     }
                     _management.recordsPhase();
-                    print(
-                        "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-                    print(recordsList[index]['duration']);
 
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Confirm")),
+                  child: const Text("Confirm"),),
             ],
           );
         });

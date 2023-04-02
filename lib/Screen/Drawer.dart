@@ -6,19 +6,14 @@ import 'package:flutter/material.dart';
 import '../bloc/bloc_func.dart';
 
 class DrawerMain extends StatefulWidget {
-  DrawerMain({Key? key}) : super(key: key);
+  const DrawerMain({Key? key}) : super(key: key);
 
   @override
   State<DrawerMain> createState() => _DrawerMainState();
 }
 
 class _DrawerMainState extends State<DrawerMain> {
-  final PhaseManagement _management = PhaseManagement();
-  @override
-  void initState() {
-    _management.recordsPhase();
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
