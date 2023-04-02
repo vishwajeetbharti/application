@@ -1,3 +1,5 @@
+import '../bloc/bloc_func.dart';
+
 class Strings {
   static const firstName = 'First Name Only';
   static const upDate = 'Enter upcoming date';
@@ -24,4 +26,5 @@ class Strings {
   int i = 0;
 }
 
+final PhaseManagement _management= PhaseManagement();
 List<Map<String, dynamic>> recordsList = [];

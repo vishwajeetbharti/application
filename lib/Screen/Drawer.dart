@@ -3,16 +3,25 @@ import 'package:application/Screen/aboutUs.dart';
 import 'package:application/Screen/profile.dart';
 import 'package:flutter/material.dart';
 
-import '../Data/string.dart';
 import '../bloc/bloc_func.dart';
 
-class DrawerMain extends StatelessWidget {
+class DrawerMain extends StatefulWidget {
   DrawerMain({Key? key}) : super(key: key);
+
+  @override
+  State<DrawerMain> createState() => _DrawerMainState();
+}
+
+class _DrawerMainState extends State<DrawerMain> {
   final PhaseManagement _management = PhaseManagement();
+  @override
+  void initState() {
+    _management.recordsPhase();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    _management.add(RecordsPhase());
     return SizedBox(
       width: 200,
       child: Drawer(
@@ -50,8 +59,7 @@ class DrawerMain extends StatelessWidget {
                 Navigator.push<void>(
                   context,
                   MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>
-                          Record(record: recordsList)),
+                      builder: (BuildContext context) => const Record()),
                 );
                 // Navigator.pop(context);
               },
@@ -62,7 +70,7 @@ class DrawerMain extends StatelessWidget {
             ),
             ListTile(
               title: const Text('About Us'),
-              onTap: () {
+              onTap: () async {
                 Navigator.push<void>(
                   context,
                   MaterialPageRoute<void>(

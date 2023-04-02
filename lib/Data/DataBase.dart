@@ -12,6 +12,7 @@ class DataBaseHelper {
   static const _userData = 'user_data';
   static const name = 'name';
   static const sNo = 'Sno';
+  static const diff = 'diff';
   static const startDate = 'start';
   static const endDate = 'end';
   static const averageDay = 'average_day';
@@ -47,9 +48,10 @@ class DataBaseHelper {
     db.execute('''
     CREATE TABLE IF NOT EXISTS $_userData(
     $sNo INTEGER PRIMARY KEY,
+    $diff TEXT,
     $startDate DATE,
     $endDate DATE,
-    $duration INTEGER,
+    $duration TEXT,
     $name REFERENCES $_userDetails($name) ON DELETE CASCADE
     )
     ''');
@@ -76,6 +78,11 @@ class DataBaseHelper {
   toDeleteData(String date) async {
     Database db = await instance.database;
     return await db.delete(_userData, where: '$endDate=?', whereArgs: [date]);
+  }
+
+  toUpDateData(int id, Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    return await db.update(_userData, row, where: '$sNo=?', whereArgs: [id]);
   }
 
   Future<List<Map<String, dynamic>>> getData() async {

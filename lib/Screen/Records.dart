@@ -1,25 +1,30 @@
 import 'package:application/Data/data.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import '../Data/string.dart';
 import '../bloc/bloc_func.dart';
 
 class Record extends StatefulWidget {
-  const Record({Key? key, required this.record}) : super(key: key);
-  final List record;
-
+  const Record({Key? key}) : super(key: key);
   @override
   State<Record> createState() => _RecordState();
 }
-
-final PhaseManagement _management = PhaseManagement();
 
 final TextEditingController averageDayController = TextEditingController();
 String milliSecondStartTime = '';
 String milliSecondEndTime = '';
 
 class _RecordState extends State<Record> {
+  final PhaseManagement _management = PhaseManagement();
+
+  @override
+  void initState() {
+    _management.recordsPhase();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,63 +65,76 @@ class _RecordState extends State<Record> {
             ],
           ),
           Expanded(
-            child: ListView.builder(
-                itemCount: widget.record.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.08,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            _showCommonDateDialog(
-                                context, index, Strings.startDate);
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.2,
-                            margin: const EdgeInsets.only(left: 20),
-                            child: Text(
-                              widget.record[index]['start'],
-                              style: const TextStyle(
-                                  fontSize: 20, color: Colors.black),
+            child: StreamBuilder(
+                stream: _management.controller.stream,
+                builder: (context,
+                    AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+                  print(snapshot.connectionState);
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: Text("Null !!!"),
+                    );
+                  } else {
+                    return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.08,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    _showCommonDateDialog(
+                                        context, index, Strings.startDate);
+                                  },
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.2,
+                                    margin: const EdgeInsets.only(left: 20),
+                                    child: Text(
+                                      snapshot.data![index]['start'],
+                                      style: const TextStyle(
+                                          fontSize: 20, color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    _showCommonDateDialog(
+                                        context, index, Strings.endDate);
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 80),
+                                    child: Text(
+                                      snapshot.data![index]['end'],
+                                      style: const TextStyle(
+                                          fontSize: 20, color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    _showCommonDateDialog(context, index, "");
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 90),
+                                    child: Text(
+                                      "${snapshot.data![index]['duration']}",
+                                      style: const TextStyle(
+                                          fontSize: 20, color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            _showCommonDateDialog(
-                                context, index, Strings.endDate);
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 80),
-                            child: Text(
-                              widget.record[index]['end'],
-                              style: const TextStyle(
-                                  fontSize: 20, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            _showCommonDateDialog(context, index, "");
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 90),
-                            child: Text(
-                              "${widget.record[index]['duration']}",
-                              style: const TextStyle(
-                                  fontSize: 20, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                          );
+                        });
+                  }
                 }),
           ),
         ],
@@ -232,23 +250,37 @@ class _RecordState extends State<Record> {
                   },
                   child: const Text("Cancel")),
               TextButton(
-                  onPressed: () {
-                    date == ""
-                        ? _management.upDateDuration(
-                            index,
-                            int.parse(averageDayController.text),
-                            widget.record[index]['end'])
-                        : date == Strings.startDate
-                            ? _management.upDateStartDate(
-                                index,
-                                widget.record[index - 1]['end'],
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    int.parse(milliSecondStartTime)))
-                            : _management.upDateEndDate(
-                                index,
-                                widget.record[index]['start'],
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    int.parse(milliSecondEndTime)));
+                  onPressed: () async {
+                    if (milliSecondEndTime == '' &&
+                        milliSecondStartTime == '' &&
+                        averageDayController.text.isEmpty) {
+                      Fluttertoast.showToast(msg: "error");
+                    } else {
+                      date == ""
+                          ? _management.upDateDuration(
+                              recordsList[index]['name'],
+                              index,
+                              int.parse(averageDayController.text),
+                              DateTime.parse(recordsList[index]['end']),
+                              DateTime.parse(recordsList[index]['start']))
+                          : date == Strings.startDate
+                              ? _management.upDateStartDate(
+                                  index,
+                                  recordsList[index - 1]['end'],
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      int.parse(milliSecondStartTime)))
+                              : _management.upDateEndDate(
+                                  index,
+                                  recordsList[index]['start'],
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      int.parse(milliSecondEndTime)));
+                    }
+                    _management.recordsPhase();
+                    print(
+                        "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+                    print(recordsList[index]['duration']);
+
+                    Navigator.of(context).pop();
                   },
                   child: const Text("Confirm")),
             ],
